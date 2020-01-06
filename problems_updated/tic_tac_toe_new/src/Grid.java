@@ -1,31 +1,49 @@
 public class Grid
 {
-    String[] board ={"-", "-", "-","-", "-", "-","-", "-", "-"};
-    int[] gridValue = {0,0,0,0,0,0,0,0,0};
+    char[][] cellValue ={{'-','-','-'},{'-','-','-'},{'-','-','-'}};
 
     public void displayGrid() {
-        for(int i=0;i<board.length;i++)
+        for(int i=0;i<cellValue.length;i++)
         {
-            System.out.print(board[i]+"    ");
-            if(i%3==2) {
-                System.out.println("");
+            for(int j=0;j<cellValue[i].length;j++)
+            {
+                System.out.print(cellValue[i][j]+"    ");
             }
+            System.out.println(" ");
         }
     }
 
     public boolean isFilled(int position) {
-        if(gridValue[position-1]==0)
+
+        if(cellValue[(position-1)/3][(position-1)%3]=='-') {
             return false;
+        }
         return true;
     }
 
-    public boolean isEmpty()
+    public boolean hasEmpty()
     {
-        for(int iteration=0;iteration<gridValue.length;iteration++)
+        for(int i=0;i<cellValue.length;i++)
         {
-            if(this.gridValue[iteration]==0)
-                return true;
+            for(int j=0;j<cellValue[i].length;j++)
+            {
+                if(cellValue[i][j]=='-')
+                    return true;
+            }
         }
         return false;
+    }
+    public char getCell(int row,int column)
+    {
+        return cellValue[row][column];
+    }
+
+    public void displayGridLayout() {
+        for(int i=1;i<=9;i++)
+        {
+            System.out.print(i+"    ");
+            if(i%3==0)
+                System.out.println(" ");
+        }
     }
 }

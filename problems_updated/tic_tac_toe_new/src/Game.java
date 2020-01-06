@@ -1,70 +1,42 @@
-import java.util.Scanner;
-
 public class Game
 {
-    Grid grid;
+    private Grid grid;
     Player player1,player2;
     private boolean turn=true;
     private String winner=null;
     public Game()
     {
         grid=new Grid();
-        player1=new Player("Manikanta","O");
-        player2=new Player("Naveen","X");
+        player1=new Player("Manikanta",'O');
+        player2=new Player("Naveen",'X');
 
     }
 
     private boolean checkForWinner()
     {
-        if((grid.gridValue[0] == grid.gridValue[1]) && (grid.gridValue[1] == grid.gridValue[2]) && (grid.gridValue[0] != 0))
+        for(int i=0;i<grid.cellValue.length;i++)
         {
-            return true;
+            if(grid.getCell(i,0)==grid.getCell(i,1) && grid.getCell(i,1)==grid.getCell(i,2) && grid.getCell(i,0)!='-')
+                return true;
+            else if(grid.getCell(0,i)==grid.getCell(1,i) && grid.getCell(1,i)==grid.getCell(2,i) && grid.getCell(0,i)!='-')
+                return true;
         }
-        else if(grid.gridValue[3]==grid.gridValue[4] && grid.gridValue[4]==grid.gridValue[5]  && (grid.gridValue[3] != 0))
-        {
+
+        if(grid.getCell(0,0)==grid.getCell(1,1) && grid.getCell(1,1)==grid.getCell(2,2) && grid.getCell(1,1)!='-')
             return true;
-        }
-        else if(grid.gridValue[6]==grid.gridValue[7] && grid.gridValue[7]==grid.gridValue[8] && (grid.gridValue[6] != 0))
-        {
+        else if(grid.getCell(0,0)==grid.getCell(1,1) && grid.getCell(1,1)==grid.getCell(2,2) && grid.getCell(1,1)!='-')
             return true;
-        }
-        else if(grid.gridValue[0]==grid.gridValue[3] && grid.gridValue[3]==grid.gridValue[6] && (grid.gridValue[0] != 0))
-        {
-            return true;
-        }
-        else if(grid.gridValue[1]==grid.gridValue[4] && grid.gridValue[4]==grid.gridValue[7] && (grid.gridValue[1] != 0))
-        {
-            return true;
-        }
-        else if(grid.gridValue[2]==grid.gridValue[5] && grid.gridValue[5]==grid.gridValue[8] && (grid.gridValue[2] != 0))
-        {
-            return true;
-        }
-        else if(grid.gridValue[0]==grid.gridValue[4] && grid.gridValue[4]==grid.gridValue[8] && (grid.gridValue[0] != 0))
-        {
-            return true;
-        }
-        else if(grid.gridValue[6]==grid.gridValue[4] && grid.gridValue[4]==grid.gridValue[2] && (grid.gridValue[6] != 0))
-        {
-            return true;
-        }
         return false;
     }
 
-    private int enterPosition()
+    private int markCell(Player currentPlayer)
     {
+        System.out.println(currentPlayer.getName()+" enter position[1-9] to mark");
         int position;
-        String player=player2.name;
-        Scanner input=new Scanner(System.in);
-        if(this.turn==true)
-            player = player1.name;
-
-        System.out.println(player+" enter position to mark");
-
         do {
-            position=input.nextInt();
+            position=currentPlayer.enterGridPosition();
             if(position<1 || position>9)
-                System.out.println("Invalid Position enter position again");
+                System.out.println("Invalid Position enter position between 1 and 9");
             else if(!grid.isFilled(position))
             {
                 break;
@@ -76,22 +48,17 @@ public class Game
 
     private void startGame()
     {
-        int position=-1;
-        while(winner==null && grid.isEmpty())
+        Player currentPlayer=player1;
+        System.out.println("Grid Positions are as followed");
+        grid.displayGridLayout();
+        while(winner==null && grid.hasEmpty())
         {
+            currentPlayer=player2;
+            if(this.turn)
+                currentPlayer=player1;
+            int position = this.markCell(currentPlayer);
+            grid.cellValue[(position-1)/3][(position-1)%3]=currentPlayer.getSymbol();
             grid.displayGrid();
-            position = this.enterPosition();
-            if(this.turn==true)
-            {
-                grid.board[position-1]=player1.symbol;
-                grid.gridValue[position-1]=1;
-            }
-            else
-            {
-                grid.board[position-1]=player2.symbol;
-                grid.gridValue[position-1]=2;
-            }
-
             if(this.checkForWinner())
             {
                break;
@@ -101,10 +68,7 @@ public class Game
 
         if(this.checkForWinner())
         {
-            if(this.turn==true)
-                this.winner=player1.name;
-            else
-                this.winner=player2.name;
+            this.winner=currentPlayer.getName();
             System.out.println(this.winner+" Won the Game!!!");
         }
         else
