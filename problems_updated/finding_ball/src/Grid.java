@@ -1,12 +1,13 @@
 public class Grid
 {
-    public int xmin,xmax,ymin,ymax;
-    public Grid(int xmin,int ymin,int xmax,int ymax)
+    private int size;
+    public Grid(int size)
     {
-        this.xmin=xmin;
-        this.ymin=ymin;
-        this.xmax=xmax;
-        this.ymax=ymax;
+        this.size=size;
+    }
+    public int getGridSize()
+    {
+        return size;
     }
 
 }

@@ -1,19 +1,14 @@
 public class Ball
 {
-    private int xcoordinate,ycoordinate;
-    public Ball(int xvalue,int yvalue)
+    Position position;
+    public Ball(int xcoordinate,int ycoordinate)
     {
-        this.xcoordinate=xvalue;
-        this.ycoordinate=yvalue;
+        position=new Position(xcoordinate,ycoordinate);
     }
-    public int getXcoordinate()
+    public Position getPosition()
     {
-        return xcoordinate;
+        return this.position;
     }
 
-    public int getYcoordinate()
-    {
-        return ycoordinate;
-    }
 
 }

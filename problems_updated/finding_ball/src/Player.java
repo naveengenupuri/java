@@ -1,46 +1,48 @@
 public class Player
 {
-    String name;
-    int xstart,ystart;
-    public Player(String name,int xstart,int ystart) {
+    private String name;
+    private Position position;
+    public Player(String name,int xcoordinate,int ycoordinate) {
         this.name=name;
-        this.xstart=xstart;
-        this.ystart=ystart;
+        position=new Position(xcoordinate,ycoordinate);
     }
-
-
-    public void movePlace(Game game,Grid grid)
+    public Position getPosition()
     {
-        double previousDistance=0,presentDistance=0,horizontal=0;
-        while(game.calculateDistance()!=0)
+        return this.position;
+    }
+
+    public void movePosition(Game game) {
+        double previousDistance=0,presentDistance=0;
+        previousDistance=game.getDistance();
+
+        position.incrementXcoordinate();
+        position.printPosition();
+        presentDistance=game.getDistance();
+        if(presentDistance>previousDistance)
         {
-            previousDistance=game.calculateDistance();
-            System.out.println(xstart+","+ystart);
-                xstart++;
-                presentDistance=game.calculateDistance();
-                if(presentDistance>previousDistance)
-                {
-                    xstart--;
-                    break;
-                }
+
+            position.decrementXcoordinate();
+            System.out.println("You took wrong step so moving backward");
+            position.printPosition();
         }
 
-        while(game.calculateDistance()!=0)
-        {
-            previousDistance=game.calculateDistance();
 
-            ystart++;
-            presentDistance=game.calculateDistance();
-            System.out.println(xstart+","+ystart);
-            if(presentDistance>previousDistance)
-            {
-                ystart--;
-                break;
-            }
+        previousDistance=presentDistance;
+
+        position.incrementYcoordinate();
+        presentDistance=game.getDistance();
+        if(presentDistance>previousDistance)
+        {
+
+            position.decrementYcoordinate();
+            System.out.println("You took wrong step so moving backward");
+            position.printPosition();
         }
+
 
 
     }
+
 
 
 }
